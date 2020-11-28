@@ -204,8 +204,7 @@ def modify_query(query):
     Method that will modify the queries to take advantage of the gensim package
     --> this will help us focus on the 5 most similar words to a query 
     '''
-    
-    minusFlag = ''
+    minusFlag = '' 
 
     if query != '' and query != None:
         if '-' in query:
