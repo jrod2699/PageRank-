@@ -275,3 +275,23 @@ INFO:root:rank=9 pagerank=8.5106e-02 url=www.lawfareblog.com/district-court-ruli
 ```
 
 The latter results provide very interesting article titles! 
+
+## Modifications using Word2Vec
+
+This implementation of pagerank uses the `gensim` library to create word vectors modify the output of queries. Whenever a query -- or personalization vector query -- is made, the query focuses on the 5 most similar words to it, meaning that if we use the minus - sign in a query, we'd get the top urls the exclude the query and its 5 most similar words. For the `gensim` model, `glove-twitter-25` was used limiting the modifications to twitter data and only 25 dimensions. However, larger models trained on more data yield better results. 
+
+Here are the results after making the modifications: 
+```
+$ python3 pagerank.py --data=./lawfareblog.csv.gz --search_query='weapons'
+INFO:gensim.models.keyedvectors:precomputing L2-norms of word weight vectors
+INFO:root:rank=0 pagerank=0.004571518860757351 url=www.lawfareblog.com/why-did-you-wait-moral-emptiness-and-drone-strikes
+INFO:root:rank=1 pagerank=0.0031107424292713404 url=www.lawfareblog.com/dc-district-court-dismisses-journalists-drone-lawsuit
+INFO:root:rank=2 pagerank=0.0020231129601597786 url=www.lawfareblog.com/revived-cia-drone-strike-program-comments-new-policy
+INFO:root:rank=3 pagerank=0.0019667143933475018 url=www.lawfareblog.com/us-court-appeals-dc-circuit-dismisses-suit-over-us-drone-strike
+INFO:root:rank=4 pagerank=0.001178761012852192 url=www.lawfareblog.com/iran-shoots-down-us-drone-domestic-and-international-legal-implications
+INFO:root:rank=5 pagerank=0.0011619674041867256 url=www.lawfareblog.com/slaughterbots-and-other-anticipated-autonomous-weapons-problems
+INFO:root:rank=6 pagerank=0.0011276121949777007 url=www.lawfareblog.com/german-courts-weigh-legal-responsibility-us-drone-strikes
+INFO:root:rank=7 pagerank=0.0008373793680220842 url=www.lawfareblog.com/shift-jsoc-drone-strikes-does-not-mean-cia-has-been-sidelined
+INFO:root:rank=8 pagerank=0.0007870369008742273 url=www.lawfareblog.com/atomwaffen-division-member-pleads-guilty-firearms-charge
+INFO:root:rank=9 pagerank=0.0007856971933506429 url=www.lawfareblog.com/waiving-imminent-threat-test-cia-drone-strikes-pakistan
+```
