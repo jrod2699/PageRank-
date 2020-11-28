@@ -1,8 +1,5 @@
 # Pagerank Project
 
-In this project, I created a simple search engine for the website https://www.lawfareblog.com .
-This website provides legal analysis on US national security issues.
-
 ## Task 1: the power method
 
 Implement the `WebGraph.power_method` function in `pagerank.py` for computing the pagerank vector.
