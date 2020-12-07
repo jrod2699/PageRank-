@@ -184,6 +184,17 @@ def url_satisfies_query(url, query):
     satisfies = False
     terms = query.split()
 
+    sim_words = []
+    for term in terms: 
+        if term[0] == '-':
+            pass
+        if term[0] != '-':
+            sim = vectors.most_similar(term)
+            for i in range(5):
+                sim_words.append(sim[i][0])
+
+    terms.extend(sim_words)
+    
     num_terms=0
     for term in terms:
         if term[0] != '-':
@@ -198,20 +209,6 @@ def url_satisfies_query(url, query):
             if term[1:] in url:
                 return False
     return satisfies
-
-def modify_query(query):
-    '''
-    Method that will modify the queries to take advantage of the gensim package
-    --> this will help us focus on the 5 most similar words to a query 
-    '''
-    minusFlag = '' 
-
-    if query != '' and query != None:
-        if '-' in query:
-            minusFlag = '-'
-        for word, _ in vectors.most_similar(query.replace('-', ''))[:5]:
-            query += ' ' + minusFlag + word
-    return query
 
 if __name__=='__main__':
     import argparse
@@ -233,6 +230,6 @@ if __name__=='__main__':
         logging.basicConfig(level=logging.INFO)
 
     g = WebGraph(args.data, filter_ratio=args.filter_ratio)
-    v = g.make_personalization_vector(modify_query(args.personalization_vector_query))
+    v = g.make_personalization_vector(args.personalization_vector_query)
     pi = g.power_method(v, alpha=args.alpha, max_iterations=args.max_iterations, epsilon=args.epsilon)
-    g.search(pi, query=modify_query(args.search_query), max_results=args.max_results)
+    g.search(pi, query=args.search_query, max_results=args.max_results)
